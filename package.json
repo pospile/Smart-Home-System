@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "Smart Home System API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Succes: Run as expected\""
+  },
+  "keywords": [
+    "Smart",
+    "Home",
+    "System",
+    "API"
+  ],
+  "author": "Vojtěch Pospíchal",
+  "license": "ISC",
+  "dependencies": {
+    "simple-node-db": "^0.90.35"
+  }
+}
