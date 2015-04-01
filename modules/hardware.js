@@ -9,7 +9,7 @@ var receivedLight = 0;
 
 var turnLight = false;
 var turnSound = false;
-
+var turnCir1 = false;
 
 
 
@@ -74,6 +74,14 @@ serialPort.on("open", function () {
 				turnSound = false;
 			});
 		}
+		if (turnCir1)
+		{
+			serialPort.write("3", function(err, results) {
+				//console.log('Turn on sound API - on');
+				log.writeLog('sound_played');
+				turnSound = false;
+			});
+		}
 
 	});
 });
@@ -97,7 +105,10 @@ var sendSound = function () {
 	turnSound = true;
 	return true;
 }
-
+var turnCirc1 = function () {
+	turnCir1 = true;
+	return true;
+}
 
 
 
@@ -126,4 +137,7 @@ exports.playSound = function()
 }
 exports.turnLight = function () {
 	return sendLight();
+}
+exports.turnCircuit1 = function () {
+	return turnCirc1();
 }

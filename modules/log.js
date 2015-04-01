@@ -17,6 +17,15 @@ loadKey.get("QFj3t3kfol", {
 	}
 });
 
+var returnKey = function (returnCallback) {
+	var getKey = new Parse.Query(Key);
+	getKey.get("QFj3t3kfol", {
+		success: function(loadKey) {
+			keyIndex = loadKey.get('key');
+			returnCallback(keyIndex);
+		}
+	});
+}
 
 
 var updateLog = function (val, user) {
@@ -41,31 +50,69 @@ var writeLog = function (val, key, user) {
 	log.save(null);
 }
 
-var printLog = function (toConsole, callback) {
-	var query = new Parse.Query(Log);
-	query.find({
-		success: function(results) {
-			console.log('Number of logs: ' + results.length);
-			var tabulated = {};
-			for (var i = 0; i < results.length; i++) {
-				var object = results[i];
-				if (toConsole) {
-					console.log('--------------------------------------------------------');
-					console.log(object._serverData.idKey + ': ' + object._serverData.log);
+
+
+var printLog = function(toConsole, callback) {
+
+	returnKey(function (key) {
+		var query = new Parse.Query(Log);
+		query.limit(key);
+		query.find({
+			success: function(results) {
+				console.log('Number of logs: ' + results.length);
+				var tabulated = {};
+				for (var i = 0; i < results.length; i++) {
+					var object = results[i];
+					if (toConsole) {
+						console.log('--------------------------------------------------------');
+						console.log(object._serverData.idKey + ': ' + object._serverData.log);
+					}
+					tabulated.key = object._serverData.idKey;
+					tabulated.log = object._serverData.log;
+					final.push(tabulated);
+					tabulated = {};
 				}
-				tabulated.key = object._serverData.idKey;
-				tabulated.log = object._serverData.log;
-				final.push(tabulated);
-				tabulated = {};
+				callback(final);
 			}
-			return;
-		}
+		});
+	});
+
+}
+
+
+
+var removeLogInit = function (token) {
+	returnKey(function (key) {
+		console.log('Removing '+ key + 'results.');
+		removeLog(token, parseInt(key) + 10);
 	});
 }
 
-var removeLog = function () {
+var removeLog = function (token, limit) {
+	var query = new Parse.Query(Log);
+	query.limit(limit);
+	query.find({
+		success: function(results) {
+			for (var i = 0; i < results.length; i++) {
+				var object = results[i];
+				object.destroy();
+			}
+			console.log('All logs removed. Saving database.');
 
-	return true;
+
+			var loadKey = new Parse.Query(Key);
+			loadKey.get("QFj3t3kfol", {
+				success: function(loadKey) {
+					loadKey.set('key', 0);
+					loadKey.save();
+					setTimeout(function () {
+						updateLog('All logs removed by: ' + token, token);
+						return;
+					}, 2000);
+				}
+			});
+		}
+	});
 }
 
 
@@ -87,15 +134,15 @@ exports.writeLog = function (value)
 	return true;
 }
 
-exports.readyLog = function (toConsole)
-{
-	var returned = printLog(toConsole);
-}
 
-exports.getLog = final;
+exports.getLog = function (toConsole, callback) {
+	printLog(toConsole, function (returned) {
+		callback(returned);
+	});
+}
 
 
 exports.deleteLog = function (TOKEN)
 {
-	removeLog(TOKEN);
+	removeLogInit(TOKEN);
 }

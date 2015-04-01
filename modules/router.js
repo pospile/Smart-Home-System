@@ -1,6 +1,7 @@
 var express = require('express');
 var log = require('./log');
 var system = require('./system');
+var db = require('./database');
 
 exports.initialize = function () {
 	log.writeLog('Preparing to load APi');
@@ -68,7 +69,15 @@ function APIexpose (app)
 
 	app.get('/status/log', function (req, res) {
 		log.writeLog('returning_system_log');
-		res.json(log.printLog(false));
+		log.getLog(false, function (returned) {
+			res.json(returned);
+		});
+	});
+	app.get('/status/module', function (req, res) {
+		log.writeLog('returning_all_modules');
+		db.getModules(function (modules) {
+			res.json(modules);
+		});
 	});
 
 
@@ -86,13 +95,13 @@ function APIexpose (app)
 	app.get('/set/light', function (req, res) {
 		log.writeLog('light_turn_on');
 		system.setLight();
-		res.json({system: 'done'});
+		res.json({light: 'done'});
 	});
 
 	app.get('/set/sound', function (req, res) {
 		log.writeLog('sound_turn_on');
 		system.setSound();
-		res.json({system: 'done'});
+		res.json({sound: 'done'});
 	});
 
 

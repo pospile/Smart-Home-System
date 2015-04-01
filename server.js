@@ -49,7 +49,6 @@ var timer = setInterval(function () {
   if (bar.complete) {
     console.log('\ncomplete\n');
 	log.writeLog('System is up and running');
-	//log.printLog();
 	system.setStatus('booted');
     clearInterval(timer);
 	initialized();
@@ -63,7 +62,7 @@ var initialized = function ()
 	utilize.clear();
 	console.log("Testing connection to Home System".red);
 	system.setStatus('ok');
-	system.setSound();
+	//system.setSound();
 	router.initialize();
 
 }
