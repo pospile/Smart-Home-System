@@ -1,6 +1,7 @@
 var express = require('express');
 var log = require('./log');
 var system = require('./system');
+var db = require('./database');
 
 exports.initialize = function () {
 	log.writeLog('Preparing to load APi');
@@ -13,6 +14,13 @@ function APIexpose (app)
 	log.writeLog('Prepare completed..');
 	var app = express();
 
+	app.use(function (req, res, next) {
+
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		next();
+	});
+
 	var server = app.listen(2579, function () {
 
 		var port = server.address().port
@@ -23,16 +31,13 @@ function APIexpose (app)
 
 
 
-// turn system ON
-	app.put('/', function (req, res) {
-		console.log("");
-		res.json({light: 'on'});
-	});
 
 // turn system OFF
-	app.delete('/', function (req, res) {
-		console.log("");
-		res.json({light: 'off'});
+	app.delete('/off', function (req, res) {
+		setTimeout(function () {
+			process.exit();
+		}, 5000);
+		log.writeLog('Turning system off in 5 seconds');
 	});
 
 	/*
@@ -68,7 +73,23 @@ function APIexpose (app)
 
 	app.get('/status/log', function (req, res) {
 		log.writeLog('returning_system_log');
-		res.json(log.printLog(false));
+		log.getLog(false, function (returned) {
+			res.json(returned);
+		});
+	});
+	app.get('/status/module', function (req, res) {
+		log.writeLog('returning_all_modules');
+		db.getModules(function (modules) {
+			res.json(modules);
+		});
+	});
+
+	app.get('/status/module/:id', function (req, res) {
+		log.writeLog('returning_single_module');
+		console.log('Finding: ' + req.params.id);
+		db.getSingleModule(req.params.id, function (data) {
+			res.json(data);
+		});
 	});
 
 
@@ -86,18 +107,22 @@ function APIexpose (app)
 	app.get('/set/light', function (req, res) {
 		log.writeLog('light_turn_on');
 		system.setLight();
-		res.json({system: 'done'});
+		res.json({light: 'done'});
 	});
 
 	app.get('/set/sound', function (req, res) {
 		log.writeLog('sound_turn_on');
 		system.setSound();
-		res.json({system: 'done'});
+		res.json({sound: 'done'});
 	});
 
-
-
-
+	app.get('/set/module', function (req, res) {
+		db.writeModule(2, function (data) {
+			//console.log(data);
+			system.setCirc1();
+			res.json(data);
+		});
+	});
 
 
 
