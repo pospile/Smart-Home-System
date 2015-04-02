@@ -25,6 +25,9 @@ exports.setLight = function () {
 exports.setSound = function () {
 	return hardware.playSound();
 }
+exports.setCirc1 = function () {
+	return hardware.turnCircuit1();
+}
 exports.setStatus = function (statut) {
 	log.writeLog('status_set_to_' + statut);
 	status = statut;

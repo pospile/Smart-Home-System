@@ -27,6 +27,7 @@ var returnModules = function (callback) {
 			var module = {};
 			for (var i = 0; i < results.length; i++) {
 				var object = results[i];
+				module.id = object.id;
 				module.name = object._serverData.name;
 				module.description = object._serverData.description;
 				module.owner = object._serverData.owner;
@@ -34,6 +35,37 @@ var returnModules = function (callback) {
 				module = {};
 			}
 			callback(final);
+			final = [];
+		}
+	});
+}
+
+var writeInfoAboutModule = function (id, callback) {
+	var query = new Parse.Query(Module);
+	query.equalTo("moduleID", id);
+	query.first({
+		success: function(result) {
+			var active = result._serverData.active;
+			var moduleUpdate = new Module();
+			moduleUpdate.id = result.id;
+			moduleUpdate.set('active', !active);
+			moduleUpdate.save(null, {
+				success: function(update)
+				{
+					callback(update);
+				}
+			});
+		}
+	});
+}
+
+var getSingleModule = function (id, callback) {
+	var query = new Parse.Query(Module);
+	query.equalTo("objectId", id);
+	query.first({
+		success: function(result) {
+			//console.log(result);
+			callback(result);
 		}
 	});
 }
@@ -54,4 +86,16 @@ exports.getModules = function (callback) {
 	returnModules(function (retrieved) {
 		callback(retrieved);
 	})
+}
+
+exports.getSingleModule = function (id, callback) {
+	getSingleModule(id, function (result) {
+		callback(result);
+	});
+}
+
+exports.writeModule = function (id, callback) {
+	writeInfoAboutModule(id, function (data) {
+		callback(data);
+	});
 }

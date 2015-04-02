@@ -79,7 +79,7 @@ serialPort.on("open", function () {
 			serialPort.write("3", function(err, results) {
 				//console.log('Turn on sound API - on');
 				log.writeLog('sound_played');
-				turnSound = false;
+				turnCir1 = false;
 			});
 		}
 
