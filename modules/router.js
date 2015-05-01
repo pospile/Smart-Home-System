@@ -14,6 +14,8 @@ function APIexpose (app)
 	log.writeLog('Prepare completed..');
 	var app = express();
 
+	app.use(bodyParser.urlencoded({ extended: false }));
+
 	app.use(function (req, res, next) {
 
 		res.header("Access-Control-Allow-Origin", "*");
@@ -124,6 +126,22 @@ function APIexpose (app)
 		});
 	});
 
+
+
+	/*
+		USER ROUTEs BELOW
+	 */
+
+	app.post('/user',function(request,response){
+		var    token    =   request.body.token;
+		var username	=	request.body.name;
+		var password	=	request.body.pass;
+		var    email	=	request.body.mail;
+
+		system.createUser(token, username, password, email, function (data) {
+			res.json(data);
+		});
+	});
 
 
 

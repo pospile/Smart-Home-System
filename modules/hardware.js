@@ -1,6 +1,6 @@
 var log = require('./log');
 var SerialPort = require("serialport").SerialPort
-var serialPort = new SerialPort("/dev/cu.usbmodem1451", {
+var serialPort = new SerialPort("COM3", {
 	baudrate: 9600
 });
 

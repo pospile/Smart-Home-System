@@ -1,4 +1,5 @@
 var hardware = require('./hardware');
+var security = require('./security');
 var log = require('./log');
 
 status = 'off';
@@ -31,4 +32,12 @@ exports.setCirc1 = function () {
 exports.setStatus = function (statut) {
 	log.writeLog('status_set_to_' + statut);
 	status = statut;
+}
+
+
+
+exports.createUser = function (token, name, pass, mail, callback) {
+	security.createUser(token, name, pass, mail, function (data) {
+		callback(data);
+	});
 }

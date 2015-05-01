@@ -1,10 +1,11 @@
 {
-  "name": "api",
-  "version": "1.0.0",
+  "name": "Smart-Home-System",
+  "version": "0.9.9",
   "description": "Smart Home System API",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Succes: Run as expected\""
+    "test": "echo \"Succes: Run as expected\"",
+    "start": "node server.js"
   },
   "keywords": [
     "Smart",
@@ -13,8 +14,22 @@
     "API"
   ],
   "author": "Vojtěch Pospíchal",
-  "license": "ISC",
+  "license": "CLOSE-SOURCE",
   "dependencies": {
-    "simple-node-db": "^0.90.35"
-  }
+    "body-parser": "^1.12.2",
+    "colors": "",
+    "express": "",
+    "parse": "",
+    "progress": "",
+    "serialport": ""
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pospile/Smart-Home-System.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pospile/Smart-Home-System/issues"
+  },
+  "homepage": "https://github.com/pospile/Smart-Home-System"
 }
