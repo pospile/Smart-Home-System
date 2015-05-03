@@ -1,4 +1,5 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var log = require('./log');
 var system = require('./system');
 var db = require('./database');
