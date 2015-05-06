@@ -21,7 +21,8 @@
     "express": "",
     "parse": "",
     "progress": "",
-    "serialport": ""
+    "serialport": "",
+    "string-crypt": "0.0.1"
   },
   "devDependencies": {},
   "repository": {

@@ -1,5 +1,7 @@
 var log = require('./log');
 var Parse = require('parse').Parse;
+
+
 Parse.initialize("OZzaxhboZwBA0LKHSW8TWWjyKUQNde6n7D7Ie8Ue", "ZNk19fV7khFmfEpQ2yZurDGyectCQw2nK5rHhH7d");
 
 
@@ -7,24 +9,62 @@ var user = new Parse.User();
 
 
 
-var CreateUserAccount = function (token, username, password, email, callback) {
+
+
+var CreateUserAccount = function (token, username, password, email, callback) 
+{
     user.set("username", username);
     user.set("password", password);
     user.set("email", email);
 
-    user.set("device", token);
+    user.set("token", token);
 
-    user.signUp(null, {
+    user.signUp(null, 
+    {
         success: function(user) {
-            callback({success: true});       
+            callback({success: true});
         },
         error: function(user, error) {
             callback({success: false});
         }
     });
-
 }
 
-var GenerateUserSecret = function (username) {
-	
+var LogIn = function  (username, password, callback) {
+    
+    try{
+        Parse.User.logIn("pospile", "hoover2579", {
+            success: function(user) {
+                callback(user);
+            },
+            error: function(user, error) {
+                callback(error);
+            }
+        });
+    }
+    catch (error){
+        console.log('error');
+    }    
 }
+
+
+/*
+
+
+        EXPORTS ZONE BELOW
+
+
+*/
+
+exports.createUser = function (token, username, password, email, callback) {
+    CreateUserAccount(token, username, password, email, function (data) {
+        callback(data);
+    })
+}
+
+exports.logInUser = function (username, password, callback) {
+    LogIn(username, password, function (data) {
+        callback(data);
+    })
+}
+

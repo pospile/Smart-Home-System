@@ -11,6 +11,14 @@ system.setStatus('booting');
 
 var param = process.argv[2];
 
+
+if (param == "update")
+{
+	console.log("Downloading update... ".red);
+
+	
+}
+
 if (param == "log")
 {
 	var bar = new ProgressBar(':bar', { total: 100 });
@@ -43,17 +51,7 @@ log.writeLog('UI loaded..');
 log.writeLog('API loaded into memory');
 
 
-var bar = new ProgressBar(':bar', { total: 100 });
-var timer = setInterval(function () {
-  bar.tick();
-  if (bar.complete) {
-    console.log('\ncomplete\n');
-	log.writeLog('System is up and running');
-	system.setStatus('booted');
-    clearInterval(timer);
-	initialized();
-  }
-}, 25);
+
 
 var initialized = function ()
 {
@@ -67,3 +65,7 @@ var initialized = function ()
 
 }
 
+console.log('\ncomplete\n');
+log.writeLog('System is up and running');
+system.setStatus('booted');
+initialized();

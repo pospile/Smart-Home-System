@@ -133,14 +133,29 @@ function APIexpose (app)
 		USER ROUTEs BELOW
 	 */
 
-	app.post('/user',function(request,response){
-		var    token    =   request.body.token;
+	app.post('/user/create',function(request,response){
 		var username	=	request.body.name;
 		var password	=	request.body.pass;
 		var    email	=	request.body.mail;
 
-		system.createUser(token, username, password, email, function (data) {
-			res.json(data);
+		system.createUser(username, password, email, function (data) {
+			response.json(data);
+		});
+	});
+
+	app.post('/user/login',function(request,response){
+		var username	=	request.body.name;
+		var password	=	request.body.pass;
+		system.logInUser(username, password, function (data) {
+			response.json(data);
+		});
+	});
+
+	app.post('/user/token',function(request,response){
+		var username	=	request.body.name;
+		var password	=	request.body.pass;
+		system.generateSecretToken(username, password, function (data) {
+			response.json(data);
 		});
 	});
 
