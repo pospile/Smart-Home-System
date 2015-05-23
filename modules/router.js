@@ -228,4 +228,43 @@ function APIexpose (app)
 	});
 
 
+
+	/*
+
+		CLOUD ROUTES BELOW
+
+	*/
+
+	app.get('/cloud/video/:id', function (req, res) {
+		var id = req.params.id;
+
+
+		try {
+			id = parseInt(id);
+		}
+		catch(e)
+		{
+			response.json({error: true});
+		}
+		
+
+		if (id == "")
+		{
+			response.json({error: true});
+		}
+
+		system.streamFileToBrowser(res, id, function (data) {
+			console.log(data);
+		});
+	});
+
+	app.post('/cloud/video-list', function (request, response) {
+		var page	=	request.body.page;
+
+		system.generateFilmList(page, function (data) {
+			response.json(data);
+		})
+
+	});
+
 }

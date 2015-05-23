@@ -23,7 +23,8 @@
     "progress": "",
     "serialport": "",
     "string-crypt": "0.0.1",
-    "torrent-stream": ""
+    "torrent-stream": "",
+    "request": ""
   },
   "devDependencies": {},
   "repository": {

@@ -2,6 +2,8 @@ var hardware = require('./hardware');
 var security = require('./security');
 var user = require('./user');
 var log = require('./log');
+var cloud = require('./cloud');
+var util = require('./utilize');
 
 
 status = 'off';
@@ -60,3 +62,23 @@ exports.getUserList = function (callback) {
 	});
 }
 
+exports.getUserList = function (callback) {
+	user.returnUser(function (data) {
+		callback(data);
+	});
+}
+
+
+
+
+
+exports.streamFileToBrowser = function (res, id, callback) {
+	cloud.streamFileToBrowser(res, id, function (data) {
+		callback(data);
+	});
+}
+exports.generateFilmList = function (page, callback) {
+	cloud.generateFilmList(page, function (data) {
+		callback(data);
+	})
+}
