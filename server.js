@@ -4,6 +4,7 @@ var log = require('./modules/log');
 var router = require('./modules/router');
 var ProgressBar = require('progress');
 var system = require('./modules/system');
+var notification = require('./modules/notification')();
 
 
 
@@ -15,22 +16,13 @@ var param = process.argv[2];
 if (param == "update")
 {
 	console.log("Downloading update... ".red);
-
-	
 }
 
 if (param == "log")
 {
-	var bar = new ProgressBar(':bar', { total: 100 });
-	var timer = setInterval(function () {
-	  bar.tick();
-	  if (bar.complete) {
-	    console.log('\nLog loaded succesfully\n');
-		log.writeLog('Printing log');
-		log.readyLog(true);
-	    clearInterval(timer);
-	  }
-	}, 5);
+	console.log('\nLog loaded succesfully\n');
+	log.writeLog('Printing log');
+	log.getLog(true);
 	return;
 }
 

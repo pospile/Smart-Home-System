@@ -22,7 +22,8 @@
     "parse": "",
     "progress": "",
     "serialport": "",
-    "string-crypt": "0.0.1"
+    "string-crypt": "0.0.1",
+    "torrent-stream": ""
   },
   "devDependencies": {},
   "repository": {

@@ -3,6 +3,9 @@ var bodyParser = require('body-parser');
 var log = require('./log');
 var system = require('./system');
 var db = require('./database');
+var chat = require('./chat');
+var notification = require('./notification');
+
 
 exports.initialize = function () {
 	log.writeLog('Preparing to load APi');
@@ -14,6 +17,8 @@ function APIexpose (app)
 {
 	log.writeLog('Prepare completed..');
 	var app = express();
+	
+
 
 	app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -31,6 +36,7 @@ function APIexpose (app)
 		console.log('DONE: API is running at http://localhost:%s'.green, port)
 
 	})
+
 
 
 
@@ -58,6 +64,12 @@ function APIexpose (app)
 	 });
 	 */
 
+	 /*
+	app.get('/notification', function (req, res) {
+		//notification.send('Domov pod kontrolou!', {id: 1}, 'POZOR!');
+		res.json({notified: true});
+	});
+	*/
 
 	app.get('/status', function (req, res) {
 		log.writeLog('returning_system_status as JSON');
@@ -159,8 +171,61 @@ function APIexpose (app)
 		});
 	});
 
+	app.post('/user/list', function (request, response) {
+		var token	=	request.body.token;
+
+		if(token == '')
+		{
+			response.json({error: true});
+		}
+
+		log.writeLog('returning_user_list_to_' + token);
+
+		system.getUserList(function (data) {
+			response.json(data);
+		})
+	});
 
 
+	app.post('/user/chat', function (request, response) {
+		var token	=	request.body.token;
+		var from	=	request.body.from;
+		var to		=	request.body.to;
+		var start	=	request.body.start;
+
+		if(token == '')
+		{
+			response.json({error: true});
+		}
+
+		if(start == '')
+		{
+			start = 0;
+		}
+
+		chat.returnChatMessages(from, to, start, function (result) {
+			response.json(result);
+		})
+
+	});
+
+	app.post('/user/chat/test', function (request, response) {
+		var token	=	request.body.message;
+		chat.testMessage(token);
+
+		response.json({done: true});
+	});
+
+
+	app.post('/user/location/save', function (request, response) {
+		var token	=	request.body.token;
+
+		if(token == '')
+		{
+			response.json({error: true});
+		}
+
+	});
 
 
 }

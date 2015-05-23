@@ -3,6 +3,7 @@ var security = require('./security');
 var user = require('./user');
 var log = require('./log');
 
+
 status = 'off';
 
 
@@ -52,3 +53,10 @@ exports.generateSecretToken = function (name, pass, callback) {
 		callback(data);
 	})
 }
+
+exports.getUserList = function (callback) {
+	user.returnUser(function (data) {
+		callback(data);
+	});
+}
+

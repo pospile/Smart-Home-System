@@ -33,11 +33,12 @@ var CreateUserAccount = function (token, username, password, email, callback)
 var LogIn = function  (username, password, callback) {
     
     try{
-        Parse.User.logIn("pospile", "hoover2579", {
+        Parse.User.logIn(username, password, {
             success: function(user) {
                 callback(user);
             },
             error: function(user, error) {
+                console.log('error pass or name');
                 callback(error);
             }
         });
@@ -45,6 +46,17 @@ var LogIn = function  (username, password, callback) {
     catch (error){
         console.log('error');
     }    
+}
+
+var ReturnUsers = function (callback) {
+    
+    var query = new Parse.Query(Parse.User);
+    query.find({
+      success: function(data) {
+        callback(data);
+      }
+    });
+
 }
 
 
@@ -66,5 +78,11 @@ exports.logInUser = function (username, password, callback) {
     LogIn(username, password, function (data) {
         callback(data);
     })
+}
+
+exports.returnUser = function (callback) {
+    ReturnUsers(function (data) {
+        callback(data);
+    });
 }
 

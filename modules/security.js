@@ -6,14 +6,19 @@ require('utils-strings');
 
 Parse.initialize("OZzaxhboZwBA0LKHSW8TWWjyKUQNde6n7D7Ie8Ue", "ZNk19fV7khFmfEpQ2yZurDGyectCQw2nK5rHhH7d");
 
-var user = new Parse.User();
 
 
-
+/*
 var crypt = 'pospile'.encrypt('reinolde@seznam.cz');
 console.log(crypt);
 console.log('Decrypting username');
 console.log(crypt.decrypt('reinolde@seznam.cz'));
+*/
+
+
+
+
+
 
 /*
 
